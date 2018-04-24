@@ -90,7 +90,7 @@ public class Login extends JFrame implements ActionListener {
 			ResultSet rs = null;
 			try{
 				Class.forName("org.gjt.mm.mysql.Driver");
-				cn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/personal","root","123456");
+				cn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/personal","root","cqf85453306");
 				st = cn.createStatement();
 				rs = st.executeQuery("select * from message");
 				boolean b = false;
@@ -98,7 +98,7 @@ public class Login extends JFrame implements ActionListener {
 					if(num.equals(rs.getString("id")) && password.equals(rs.getString("password"))){
 						b = true;
 						try{
-							File file = new File("E:/BaiduNetdiskDownload/64λwindowϵͳ/workspace/Course-testing-system-master/data/data.txt");
+							File file = new File("E:/workspace for danei/Course-testing-system-master/data/data.txt");
 							
 							if(!file.exists()){
 								file.createNewFile();
