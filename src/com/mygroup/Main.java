@@ -41,6 +41,7 @@ public class Main extends JFrame implements ActionListener{
 	static int a = 180;
 	int b = 1;
 	int sum = 0;
+	
 public  Main(){
 	    super();
 		this.setTitle("易考试在线考试系统");

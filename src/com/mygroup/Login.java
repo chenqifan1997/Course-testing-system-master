@@ -6,6 +6,9 @@ import java.sql.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.*;
 
 public class Login extends JFrame implements ActionListener {
@@ -56,13 +59,23 @@ public class Login extends JFrame implements ActionListener {
 	
 	private JPanel buttonPanel(){
 		JPanel panel = new JPanel();
-		panel.setLayout(new BorderLayout());
-		panel.setBorder(new EmptyBorder(0,220,40,220));
-		JButton button = new JButton();
-		button.setText("µÇÂ¼");
-		button.setFont(new Font("ËÎÌå",Font.BOLD,30));
-		button.addActionListener(this);
-		panel.add(button, BorderLayout.CENTER);
+		panel.setLayout(new GridLayout(1, 3));
+		panel.setBorder(new EmptyBorder(0,120,40,120));
+		JButton button1 = new JButton();
+		button1.setText("µÇÂ¼");
+		button1.setFont(new Font("ËÎÌå",Font.BOLD,30));
+		button1.addActionListener(this);
+		JButton button2 = new JButton();
+		button2.setText("×¢²á");
+		button2.setFont(new Font("ËÎÌå",Font.BOLD,30));
+		button2.addActionListener(this);
+		JButton button3 = new JButton();
+		button3.setText("ÖØÖÃ");
+		button3.setFont(new Font("ËÎÌå",Font.BOLD,30));
+		button3.addActionListener(this);
+		panel.add(button2);	
+		panel.add(button1);	
+		panel.add(button3);	
 		return panel;
 	}
 	
@@ -133,6 +146,12 @@ public class Login extends JFrame implements ActionListener {
 					cn.close();
 				}catch(Exception e){}
 			}
+		}
+		
+		if(arg0.getActionCommand().equals("ÖØÖÃ")){
+			this.setVisible(false);
+			Reset r = new Reset();
+			r.setVisible(true);
 		}
 	}
 
