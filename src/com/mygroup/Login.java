@@ -59,23 +59,28 @@ public class Login extends JFrame implements ActionListener {
 	
 	private JPanel buttonPanel(){
 		JPanel panel = new JPanel();
-		panel.setLayout(new GridLayout(1, 3));
-		panel.setBorder(new EmptyBorder(0,120,40,120));
+		panel.setLayout(new GridLayout(1, 4));
+		panel.setBorder(new EmptyBorder(0,80,40,80));
 		JButton button1 = new JButton();
-		button1.setText("登录");
-		button1.setFont(new Font("宋体",Font.BOLD,30));
+		button1.setText("学生登录");
+		button1.setFont(new Font("宋体",Font.BOLD,15));
 		button1.addActionListener(this);
 		JButton button2 = new JButton();
 		button2.setText("注册");
-		button2.setFont(new Font("宋体",Font.BOLD,30));
+		button2.setFont(new Font("宋体",Font.BOLD,15));
 		button2.addActionListener(this);
 		JButton button3 = new JButton();
 		button3.setText("重置");
-		button3.setFont(new Font("宋体",Font.BOLD,30));
+		button3.setFont(new Font("宋体",Font.BOLD,15));
 		button3.addActionListener(this);
+		JButton button4 = new JButton();
+		button4.setText("教师登录");
+		button4.setFont(new Font("宋体",Font.BOLD,15));
+		button4.addActionListener(this);
 		panel.add(button2);	
 		panel.add(button1);	
 		panel.add(button3);	
+		panel.add(button4);	
 		return panel;
 	}
 	
@@ -101,7 +106,7 @@ public class Login extends JFrame implements ActionListener {
 			rg.setVisible(true);
 		}
 		
-		if(arg0.getActionCommand().equals("登录")){
+		if(arg0.getActionCommand().equals("学生登录")){
 		    String num = text.getText();
 			String password = pass.getText();
 			Connection cn = null;
@@ -109,7 +114,7 @@ public class Login extends JFrame implements ActionListener {
 			ResultSet rs = null;
 			try{
 				Class.forName("org.gjt.mm.mysql.Driver");
-				cn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/personal","root","cqf85453306");
+				cn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/personal","root","123456");
 				st = cn.createStatement();
 				rs = st.executeQuery("select * from message");
 				boolean b = false;
@@ -117,7 +122,7 @@ public class Login extends JFrame implements ActionListener {
 					if(num.equals(rs.getString("id")) && password.equals(rs.getString("password"))){
 						b = true;
 						try{
-							File file = new File("E:/workspace for danei/Course-testing-system-master/data/data.txt");
+							File file = new File("E:/git/Course-testing-system-master/data/data.txt");
 							
 							if(!file.exists()){
 								file.createNewFile();
@@ -159,6 +164,61 @@ public class Login extends JFrame implements ActionListener {
 			Reset r = new Reset();
 			r.setVisible(true);
 		}
+		
+		
+		if(arg0.getActionCommand().equals("教师登录")){
+		    String num = text.getText();
+			String password = pass.getText();
+			Connection cn = null;
+			Statement st = null;
+			ResultSet rs = null;
+			try{
+				Class.forName("org.gjt.mm.mysql.Driver");
+				cn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/personal","root","123456");
+				st = cn.createStatement();
+				rs = st.executeQuery("select * from message");
+				boolean b = false;
+				while(rs.next()){
+					if(num.equals(rs.getString("id")) && password.equals(rs.getString("password"))){
+						b = true;
+						try{
+							File file = new File("E:/BaiduNetdiskDownload/64位window系统/workspace/Course-testing-system-master/data/data.txt");
+							
+							if(!file.exists()){
+								file.createNewFile();
+							}
+							
+							FileWriter fw = new FileWriter(file);  
+							fw.write(num);
+							fw.close();
+							
+						}catch(Exception e){
+							e.printStackTrace();
+						}
+						
+						break;
+					}
+				}
+				
+				if(b){
+					this.setVisible(false);
+					TeachMain m = new TeachMain();
+					m.setVisible(true);
+				}else{
+					JOptionPane.showMessageDialog(null, "输入有误", "警告", JOptionPane.ERROR_MESSAGE);
+				}
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+			finally{
+				try{
+					rs.close();
+					st.close();
+					cn.close();
+				}catch(Exception e){}
+			}
+		}
+	}
 	}
 
-}
+

@@ -114,7 +114,7 @@ public class Message extends JFrame  implements ActionListener {
 		InputStreamReader isr = null;
 		BufferedReader br = null;
 		try{
-			File file = new File("E:/workspace for danei/Course-testing-system-master/data/data.txt");
+			File file = new File("E:/git/Course-testing-system-master/data/data.txt");
 			fis = new FileInputStream(file);
 			isr = new InputStreamReader(fis);
 			br = new BufferedReader(isr);
@@ -124,7 +124,7 @@ public class Message extends JFrame  implements ActionListener {
 			}
 			
 			Class.forName("org.gjt.mm.mysql.Driver");
-			cn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/personal","root","cqf85453306");
+			cn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/personal","root","123456");
 			st = cn.createStatement();
 			rs = st.executeQuery("select * from message");
 			while (rs.next()){

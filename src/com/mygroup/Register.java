@@ -138,7 +138,7 @@ public class Register extends JFrame implements ActionListener {
 		
 		try{
 			Class.forName("org.gjt.mm.mysql.Driver");
-			cn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/personal","root","cqf85453306");
+			cn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/personal","root","123456");
 			st = cn.createStatement();
 			
 		    String sql = "insert into message(id,name,number,sex,major,class,grade,password) values(?,?,?,?,?,?,?,?)";

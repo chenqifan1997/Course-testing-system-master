@@ -196,7 +196,7 @@ public  Main(){
 		InputStreamReader isr = null;
 		BufferedReader br = null;
 		try{
-			File file = new File("E:/workspace for danei/Course-testing-system-master/data/data.txt");
+			File file = new File("E:/git/Course-testing-system-master/data/data.txt");
 			fis = new FileInputStream(file);
 			isr = new InputStreamReader(fis);
 			br = new BufferedReader(isr);
@@ -206,7 +206,7 @@ public  Main(){
 			}
 			
 			Class.forName("org.gjt.mm.mysql.Driver");
-			cn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/personal","root","cqf85453306");
+			cn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/personal","root","123456");
 			st = cn.createStatement();
 			rs = st.executeQuery("select * from message");
 			while (rs.next()){
@@ -236,7 +236,7 @@ public  Main(){
 		ResultSet rs = null;
 		try{
 			Class.forName("org.gjt.mm.mysql.Driver");
-			cn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/personal","root","cqf85453306");
+			cn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/personal","root","123456");
 			st = cn.createStatement();
 			rs = st.executeQuery("select * from exam");
 			while (rs.next()){
@@ -267,7 +267,7 @@ public  Main(){
 		ResultSet rs = null;
 		try{
 			Class.forName("org.gjt.mm.mysql.Driver");
-			cn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/personal","root","cqf85453306");
+			cn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/personal","root","123456");
 			st = cn.createStatement();
 			rs = st.executeQuery("select * from exam");
 			while (rs.next()){
@@ -300,12 +300,12 @@ public  Main(){
 @Override
 	public void actionPerformed(ActionEvent arg0) {
 		// TODO Auto-generated method stub
-		if(arg0.getActionCommand().equals("下一题")&& b < 10){
+		if(arg0.getActionCommand().equals("下一题")&& b < 20){
 			b++;
 			questionCount.setText("第"+b+"题");
 			check();
 			Exam();
-	    if(b == 10){
+	    if(b == 20){
 	    	JOptionPane.showMessageDialog(null, "你已做完所有试题！", "警告", JOptionPane.ERROR_MESSAGE);	
 	    }
 		}else if(arg0.getActionCommand().equals("上一题")&&b>1){

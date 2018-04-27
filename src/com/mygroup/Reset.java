@@ -109,12 +109,12 @@ public class Reset extends JFrame implements ActionListener {
 		
 		try{
 			Class.forName("org.gjt.mm.mysql.Driver");
-			cn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/personal","root","cqf85453306");
+			cn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/personal","root","123456");
 			st = cn.createStatement();
 			rs = st.executeQuery("select * from message");
 			while(rs.next()){
 				if(s1.equals(rs.getString("id")) && s2.equals(rs.getString("name"))){
-					Connection conn  = (Connection) DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/personal","root","cqf85453306");
+					Connection conn  = (Connection) DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/personal","root","123456");
 			        String sql = "update message set password=? where id=?";
 
 			        PreparedStatement ptmt = (PreparedStatement) conn.prepareStatement(sql);
