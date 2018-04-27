@@ -93,9 +93,11 @@ public class Reset extends JFrame implements ActionListener {
 		String s2 = text2.getText();
 		String s3 = pass1.getText();
 		String s4 = pass2.getText();
+		
 		Connection cn = null;
 		Statement st = null;
 		ResultSet rs = null;
+		PreparedStatement pre = null;
 		
 		if(s1.isEmpty() || s2.isEmpty() || s3.isEmpty() || s4.isEmpty()){
 			JOptionPane.showMessageDialog(null, "输入不可为空", "警告", JOptionPane.ERROR_MESSAGE);
@@ -111,14 +113,15 @@ public class Reset extends JFrame implements ActionListener {
 			st = cn.createStatement();
 			rs = st.executeQuery("select * from message");
 			while(rs.next()){
-//				if(!s1.equals(rs.getString("id"))){
-//					JOptionPane.showMessageDialog(null, "账号不存在", "警告", JOptionPane.ERROR_MESSAGE);
-//				}
-//				if(!s2.equals(rs.getString("name"))){
-//					JOptionPane.showMessageDialog(null, "姓名不真实", "警告", JOptionPane.ERROR_MESSAGE);
-//				}
-				if(s1.equals(rs.getString("id")) && s2.equals(rs.getString("name"))){		        
-					modify();
+				if(s1.equals(rs.getString("id")) && s2.equals(rs.getString("name"))){
+					Connection conn  = (Connection) DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/personal","root","cqf85453306");
+			        String sql = "update message set password=? where id=?";
+
+			        PreparedStatement ptmt = (PreparedStatement) conn.prepareStatement(sql);
+			        ptmt.setString(1, s3);
+			        ptmt.setString(2, s1);
+
+			        ptmt.execute();
 				}
 			}
 			}catch(Exception e){
@@ -132,28 +135,6 @@ public class Reset extends JFrame implements ActionListener {
 				}catch(Exception e){}
 		}
 	}
-	
-	public static void modify() throws ClassNotFoundException, SQLException{  
-		String s1 = text1.getText();
-		String s2 = text2.getText();
-		String s3 = pass1.getText();
-		String s4 = pass2.getText();
-		
-        Class.forName("com.mysql.jdbc.Driver");//加载驱动
-        
-        String jdbc="jdbc:mysql://127.0.0.1:3306/mydb?characterEncoding=GBK";
-        Connection conn=DriverManager.getConnection(jdbc, "root", "cqf85453306");//链接到数据库
-        
-        Statement state=conn.createStatement();   //容器
-        String sql="update message set password=? where id= " + s1;   //SQL语句
-        PreparedStatement pre = (PreparedStatement) conn.prepareStatement(sql);
-        pre.setString(1, s3);
-        state.executeUpdate(sql);         //将sql语句上传至数据库执行
-        
-        pre.close();
-        conn.close();//关闭通道
-	}  
-	
 	
 	public static void main(String[] args){
 		

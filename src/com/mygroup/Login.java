@@ -95,6 +95,12 @@ public class Login extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		// TODO Auto-generated method stub
+		if(arg0.getActionCommand().equals("×¢²á")){
+			this.setVisible(false);
+			Register rg = new Register();
+			rg.setVisible(true);
+		}
+		
 		if(arg0.getActionCommand().equals("µÇÂ¼")){
 		    String num = text.getText();
 			String password = pass.getText();
