@@ -11,7 +11,9 @@ import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -35,13 +37,15 @@ public class Main extends JFrame implements ActionListener{
 	
 	JTextField text1 = new JTextField();
 	JLabel text3 = new JLabel();
+	JLabel text4 = new JLabel();
+	JLabel text5 = new JLabel();
 	JLabel  questionCount = new JLabel();
 	JTextArea questionArea = new JTextArea();
 	Option[] options = new Option[4];
 	static int a = 180;
 	int b = 1;
 	int sum = 0;
-	
+	String str,str1,str2,str3 = null;
 public  Main(){
 	    super();
 		this.setTitle("易考试在线考试系统");
@@ -92,7 +96,7 @@ public  Main(){
 		return panel;
 	}
 	
-	private JPanel createToolsPane(){
+																																																																																																																																																																																																																																																																																																																																																																																																																																																		 private JPanel createToolsPane(){
 		JPanel panel = new JPanel(new BorderLayout());
 		panel.setBorder(new EmptyBorder(6,6,6,6));//提供间隙
 		
@@ -149,6 +153,7 @@ public  Main(){
 		JButton send = new JButton("提交");
 		pre.addActionListener(this);
 		next.addActionListener(this);
+		send.addActionListener(this);
 		panel.add(pre);
 		panel.add(next);
 		panel.add(send);
@@ -212,6 +217,8 @@ public  Main(){
 			while (rs.next()){
 				if(s.equals(rs.getString("id"))){
 					text1.setText(rs.getString("name"));
+					text4.setText(rs.getString("class"));
+					text5.setText(rs.getString("number"));
 				}
 			}
 		}catch(Exception e){
@@ -314,7 +321,39 @@ public  Main(){
 			//	Exam();
 				//check();
 			}
+		if(arg0.getActionCommand().equals("提交")){
+			 try {
+			     Class.forName("com.mysql.jdbc.Driver");//加载数据库驱动
+			     String url="jdbc:mysql://localhost:3306/personal";//声明数据库test的url
+			     String user="root";//数据库的用户名
+			     String password="123456";//数据库的密码
+			     //建立数据库连接，获得连接对象conn(抛出异常即可)
+			     Connection conn=DriverManager.getConnection(url, user, password);
+			     //生成一条mysql语句
+			     str = text3.getText();//分数
+			     str1 = text1.getText();//姓名
+			     str2 = text4.getText();//班级
+			     str3 = text5.getText();//学号
+			     String sql="insert into mark(nummber,name,class,score) values(?,?,?,?)";
+			      PreparedStatement ps=conn.prepareStatement(sql);//创建一个Statement对象
+			      ps.setNString(1,str3);//为sql语句中第一个问号赋值
+			      ps.setNString(2,str1);//为sql语句中第二个问号赋值
+			      ps.setNString(3,str2);//为sql语句第三个问号赋值
+			      ps.setNString(4,str);//为sql语句的第四个问号赋值
+			      ps.executeUpdate();//执行sql语句
+			      System.out.println("成功");
+			     conn.close();
+		 } catch (ClassNotFoundException e) {
+			 // TODO Auto-generated catch block
+			   e.printStackTrace();
+	}//
+	 catch (SQLException e) {
+     // TODO Auto-generated catch block
+  e.printStackTrace();
+ }
 		}
+		}
+
 
 	public static void main(String[] args){
 		
