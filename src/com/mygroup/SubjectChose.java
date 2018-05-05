@@ -31,75 +31,69 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
-public class SubjectChose extends JFrame implements ActionListener{
-	
+public class SubjectChose extends JFrame implements ActionListener {
 
 	JTextArea chengjiArea = new JTextArea();
-	
-public  SubjectChose(){
-	    super();
+
+	public SubjectChose() {
+		super();
 		this.setTitle("易考试在线考试系统");
 		this.setSize(600, 380);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		this.setContentPane(createContentPane());
-		//this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		// this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
-	private JPanel createContentPane(){
+
+	private JPanel createContentPane() {
 		JPanel panel = new JPanel(new BorderLayout());
-		panel.setBorder(new EmptyBorder(6,6,6,6));
+		panel.setBorder(new EmptyBorder(6, 6, 6, 6));
 		JLabel label = new JLabel();
 		label.setIcon(new ImageIcon("image/maintop.png"));
 		panel.add(BorderLayout.NORTH, label);
-		panel.add(BorderLayout.CENTER,createchengjiPane());
-		panel.add(BorderLayout.SOUTH,createToolsPane());
+		panel.add(BorderLayout.CENTER, createchengjiPane());
+		panel.add(BorderLayout.SOUTH, createToolsPane());
 		return panel;
 	}
-	
-	
-	private JPanel createToolsPane(){
+
+	private JPanel createToolsPane() {
 		JPanel panel = new JPanel(new BorderLayout());
-		panel.setBorder(new EmptyBorder(6,6,6,6));//提供间隙
-		
-		panel.add(BorderLayout.CENTER,createBtnPane());
+		panel.setBorder(new EmptyBorder(6, 6, 6, 6));// 提供间隙
+
+		panel.add(BorderLayout.CENTER, createBtnPane());
 		return panel;
 	}
-	
-	private JScrollPane createchengjiPane(){
-		JScrollPane panel  =  new JScrollPane();
+
+	private JScrollPane createchengjiPane() {
+		JScrollPane panel = new JScrollPane();
 		panel.setBorder(new TitledBorder("可选科目"));
-		chengjiArea.setLineWrap(true);//设置允许换行
-		chengjiArea.setEditable(false);//设置考题不能修改
-		return panel;		
+		chengjiArea.setLineWrap(true);// 设置允许换行
+		chengjiArea.setEditable(false);// 设置考题不能修改
+		return panel;
 	}
-	
-	
-	
-	private JPanel createBtnPane(){
+
+	private JPanel createBtnPane() {
 		JPanel panel = new JPanel(new FlowLayout());
 		JButton ch = new JButton("返回");
-		
+
 		ch.addActionListener(this);
 		panel.add(ch);
 		panel.add(ch);
 		return panel;
 	}
 
-	
-	
-	
-	
-@Override
+	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		// TODO Auto-generated method stub
-		
-    if(arg0.getActionCommand().equals("返回")){
-    	this.setVisible(false);
-    	TeachMain m = new TeachMain();
-    	m.setVisible(true);
-    }
-}
-	public static void main(String[] args){
-		
+
+		if (arg0.getActionCommand().equals("返回")) {
+			this.setVisible(false);
+			TeachMain m = new TeachMain();
+			m.setVisible(true);
+		}
+	}
+
+	public static void main(String[] args) {
+
 	}
 }

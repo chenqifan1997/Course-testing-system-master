@@ -33,62 +33,61 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
-public class TeachMain extends JFrame implements ActionListener{
-	
+public class TeachMain extends JFrame implements ActionListener {
+
 	JTextField text1 = new JTextField();
-	JLabel  questionCount = new JLabel();
+	JLabel questionCount = new JLabel();
 	JTextArea questionArea = new JTextArea();
 	JTextArea chengjiArea = new JTextArea();
 	JTextArea choseArea = new JTextArea();
 	int b = 1;
 	long a;
 	String str = null;
-public  TeachMain(){
-	    super();
+
+	public TeachMain() {
+		super();
 		this.setTitle("易考试在线考试系统");
 		this.setSize(600, 380);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		this.setContentPane(createContentPane());
-		//this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		// this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
-	private JPanel createContentPane(){
+
+	private JPanel createContentPane() {
 		JPanel panel = new JPanel(new BorderLayout());
-		panel.setBorder(new EmptyBorder(6,6,6,6));
+		panel.setBorder(new EmptyBorder(6, 6, 6, 6));
 		JLabel label = new JLabel();
 		label.setIcon(new ImageIcon("image/maintop.png"));
 		panel.add(BorderLayout.NORTH, label);
-		panel.add(BorderLayout.CENTER,createQuestionPane());
-		panel.add(BorderLayout.SOUTH,createToolsPane());
+		panel.add(BorderLayout.CENTER, createQuestionPane());
+		panel.add(BorderLayout.SOUTH, createToolsPane());
 		return panel;
 	}
-	
-	
-	private JPanel createToolsPane(){
+
+	private JPanel createToolsPane() {
 		JPanel panel = new JPanel(new BorderLayout());
-		panel.setBorder(new EmptyBorder(6,6,6,6));//提供间隙
-		
-		questionCount.setText("第"+b+"题");
-	    Exam();
-		
-		panel.add(BorderLayout.WEST,questionCount);
-		panel.add(BorderLayout.CENTER,createBtnPane());
+		panel.setBorder(new EmptyBorder(6, 6, 6, 6));// 提供间隙
+
+		questionCount.setText("第" + b + "题");
+		Exam();
+
+		panel.add(BorderLayout.WEST, questionCount);
+		panel.add(BorderLayout.CENTER, createBtnPane());
 		return panel;
 	}
-	
-	private JScrollPane createQuestionPane(){
-		JScrollPane panel  =  new JScrollPane();
+
+	private JScrollPane createQuestionPane() {
+		JScrollPane panel = new JScrollPane();
 		panel.setBorder(new TitledBorder("题目"));
-		questionArea.setLineWrap(true);//设置允许换行
-		questionArea.setEditable(true);//设置考题不能修改
-		panel.getViewport().add(questionArea);//把题目放到不带有滚动条的部分 
-		//panel.setBorder(new EmptyBorder(6,6,6,6));//提供间隙
-		return panel;		
+		questionArea.setLineWrap(true);// 设置允许换行
+		questionArea.setEditable(true);// 设置考题不能修改
+		panel.getViewport().add(questionArea);// 把题目放到不带有滚动条的部分
+		// panel.setBorder(new EmptyBorder(6,6,6,6));//提供间隙
+		return panel;
 	}
-	
-	
-	
-	private JPanel createBtnPane(){
+
+	private JPanel createBtnPane() {
 		JPanel panel = new JPanel(new FlowLayout());
 		JButton ch = new JButton("选择科目");
 		JButton t = new JButton("添加题目");
@@ -111,133 +110,116 @@ public  TeachMain(){
 		return panel;
 	}
 
-	private void Addquestion(){
-		 try {
-				     Class.forName("com.mysql.jdbc.Driver");//加载数据库驱动
-				     String url="jdbc:mysql://localhost:3306/personal";//声明数据库test的url
-				     String user="root";//数据库的用户名
-				     String password="123456";//数据库的密码
-				     //建立数据库连接，获得连接对象conn(抛出异常即可)
-				     Connection conn=DriverManager.getConnection(url, user, password);
-				     //生成一条mysql语句
-				     str = questionArea.getText();
-				     String[] fen = str.split("[\n]");
-				     String[] fen1 = fen[0].split("[.]");
-				     try{
-				      a = Integer.parseInt(fen1[0]);
-				     }catch(NumberFormatException e){
-				    	 e.printStackTrace();
-				     }
-				     String sql="insert into exam(no,content,option1,option2,option3,option4,answer) values(?,?,?,?,?,?,?)";
-				      PreparedStatement ps=conn.prepareStatement(sql);//创建一个Statement对象
-				      ps.setInt(1,(int) a);//为sql语句中第一个问号赋值
-				      ps.setNString(2,fen1[1]);//为sql语句中第二个问号赋值
-				      ps.setNString(3,fen[1]);//为sql语句第三个问号赋值
-				      ps.setNString(4,fen[2]);//为sql语句的第四个问号赋值
-				      ps.setNString(5,fen[3]);
-				      ps.setNString(6,fen[4]);
-				      ps.setNString(7,fen[5]);
-				      ps.executeUpdate();//执行sql语句
-				     conn.close();
-			 } catch (ClassNotFoundException e) {
-				 // TODO Auto-generated catch block
-				   e.printStackTrace();
-		}//
-		 catch (SQLException e) {
-	     // TODO Auto-generated catch block
-	  e.printStackTrace();
-	 }
- }
-	
-	private void Exam(){
+	private void Addquestion() {
+		Connection cn = null;
+		try {
+			cn = DataBase.getConnection("personal");
+			// 生成一条mysql语句
+			str = questionArea.getText();
+			String[] fen = str.split("[\n]");
+			String[] fen1 = fen[0].split("[.]");
+			try {
+				a = Integer.parseInt(fen1[0]);
+			} catch (NumberFormatException e) {
+				e.printStackTrace();
+			}
+			String sql = "insert into exam(no,content,option1,option2,option3,option4,answer) values(?,?,?,?,?,?,?)";
+			PreparedStatement ps = cn.prepareStatement(sql);// 创建一个Statement对象
+			ps.setInt(1, (int) a);// 为sql语句中第一个问号赋值
+			ps.setNString(2, fen1[1]);// 为sql语句中第二个问号赋值
+			ps.setNString(3, fen[1]);// 为sql语句第三个问号赋值
+			ps.setNString(4, fen[2]);// 为sql语句的第四个问号赋值
+			ps.setNString(5, fen[3]);
+			ps.setNString(6, fen[4]);
+			ps.setNString(7, fen[5]);
+			ps.executeUpdate();// 执行sql语句
+			cn.close();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+	}
+
+	private void Exam() {
 		Connection cn = null;
 		Statement st = null;
 		ResultSet rs = null;
-		try{
-			Class.forName("org.gjt.mm.mysql.Driver");
-			cn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/personal","root","123456");
+		try {
+			cn = DataBase.getConnection("personal");
 			st = cn.createStatement();
 			rs = st.executeQuery("select * from exam");
-			while (rs.next()){
-				if(b == rs.getInt(1)){
-					questionArea.setText(rs.getString("no") + "." + rs.getString("content")
-					+ "\n" + rs.getString("option1")
-					+ "\n" + rs.getString("option2")
-					+ "\n" + rs.getString("option3")
-					+ "\n" + rs.getString("option4"));			
+			while (rs.next()) {
+				if (b == rs.getInt(1)) {
+					questionArea.setText(rs.getString("no") + "." + rs.getString("content") + "\n"
+							+ rs.getString("option1") + "\n" + rs.getString("option2") + "\n" + rs.getString("option3")
+							+ "\n" + rs.getString("option4"));
 				}
-				if(b > rs.getInt(1)){
+				if (b > rs.getInt(1)) {
 					questionArea.setText("");
 				}
 			}
-		}catch(Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
-		}finally{
-			try{
+		} finally {
+			try {
 				rs.close();
 				st.close();
 				cn.close();
-			}catch(Exception e){} 
+			} catch (Exception e) {
+			}
 		}
 	}
-	
-	private void Deletequestion(){
-		 try {
-				     Class.forName("com.mysql.jdbc.Driver");//加载数据库驱动
-				     String url="jdbc:mysql://localhost:3306/personal";//声明数据库test的url
-				     String user="root";//数据库的用户名
-				     String password="123456";//数据库的密码
-				     //建立数据库连接，获得连接对象conn(抛出异常即可)
-				     Connection conn=DriverManager.getConnection(url, user, password);
-				     //生成一条mysql语句
-				     String sql="delete from exam where no = " + b;
-				     Statement stmt=conn.createStatement();//创建一个Statement对象
-				     stmt.executeUpdate(sql);//执行sql语句
-				     conn.close();
-			 } catch (ClassNotFoundException e) {
-				 // TODO Auto-generated catch block
-				   e.printStackTrace();
-		}//
-		 catch (SQLException e) {
-	     // TODO Auto-generated catch block
-	  e.printStackTrace();
-	 }
-}	
 
-@Override
+	private void Deletequestion() {
+		Connection cn = null;
+		Statement st = null;
+		try {
+			cn = DataBase.getConnection("personal");
+			String sql = "delete from exam where no = " + b;
+			st = cn.createStatement();// 创建一个Statement对象
+			st.executeUpdate(sql);// 执行sql语句
+			st.close();
+			cn.close();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+	}
+
+	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		// TODO Auto-generated method stub
-		if(arg0.getActionCommand().equals("下一题")){
+		if (arg0.getActionCommand().equals("下一题")) {
 			b++;
-			questionCount.setText("第"+b+"题");
+			questionCount.setText("第" + b + "题");
 			Exam();
-			
-		}else if(arg0.getActionCommand().equals("上一题")&&b>1){
-			   b--;
-			   questionCount.setText("第"+b+"题");
-			   Exam();
-			}
-		
-	   if(arg0.getActionCommand().equals("选择科目")){
-    	this.setVisible(false);
-    	SubjectChose n = new SubjectChose();
-    	n.setVisible(true);
-    }
-		else if(arg0.getActionCommand().equals("查询成绩")){
-    	this.setVisible(false);
-    	MarkCheck m = new MarkCheck();
-    	m.setVisible(true);
-    }
-	   if(arg0.getActionCommand().equals("添加题目")){
-		   Addquestion();
-	   }
- 
-	   if(arg0.getActionCommand().equals("删除题目")){
-		   Deletequestion();
-		   Exam();
-	   }
-}
-	public static void main(String[] args){
-		
+
+		} else if (arg0.getActionCommand().equals("上一题") && b > 1) {
+			b--;
+			questionCount.setText("第" + b + "题");
+			Exam();
+		}
+
+		if (arg0.getActionCommand().equals("选择科目")) {
+			this.setVisible(false);
+			SubjectChose n = new SubjectChose();
+			n.setVisible(true);
+		} else if (arg0.getActionCommand().equals("查询成绩")) {
+			this.setVisible(false);
+			MarkCheck m = new MarkCheck();
+			m.setVisible(true);
+		}
+		if (arg0.getActionCommand().equals("添加题目")) {
+			Addquestion();
+		}
+
+		if (arg0.getActionCommand().equals("删除题目")) {
+			Deletequestion();
+			Exam();
+		}
+	}
+
+	public static void main(String[] args) {
+
 	}
 }
