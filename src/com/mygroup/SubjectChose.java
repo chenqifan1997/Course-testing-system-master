@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -34,7 +35,8 @@ import javax.swing.border.TitledBorder;
 public class SubjectChose extends JFrame implements ActionListener {
 
 	JTextArea chengjiArea = new JTextArea();
-
+	String c;
+	
 	public SubjectChose() {
 		super();
 		this.setTitle("易考试在线考试系统");
@@ -75,7 +77,12 @@ public class SubjectChose extends JFrame implements ActionListener {
 	private JPanel createBtnPane() {
 		JPanel panel = new JPanel(new FlowLayout());
 		JButton ch = new JButton("返回");
-
+		JButton exam = new JButton("组成原理");
+		JButton exam2 = new JButton("低等算数");
+		panel.add(exam);
+		panel.add(exam2);
+		exam.addActionListener(this);
+		exam2.addActionListener(this);
 		ch.addActionListener(this);
 		panel.add(ch);
 		panel.add(ch);
@@ -91,6 +98,35 @@ public class SubjectChose extends JFrame implements ActionListener {
 			TeachMain m = new TeachMain();
 			m.setVisible(true);
 		}
+		if (arg0.getActionCommand().equals("组成原理")) {
+			c = "1";
+			try {
+				File file = new File("E:/git/Course-testing-system-master/data/control.txt");
+				if (!file.exists()) {
+					file.createNewFile();
+				}
+				FileWriter fw = new FileWriter(file);
+				fw.write(c);
+				fw.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		if (arg0.getActionCommand().equals("低等算数")) {
+			c = "2";
+			try {
+				File file = new File("E:/git/Course-testing-system-master/data/control.txt");
+				if (!file.exists()) {
+					file.createNewFile();
+				}
+				FileWriter fw = new FileWriter(file);
+				fw.write(c);
+				fw.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
 	}
 
 	public static void main(String[] args) {

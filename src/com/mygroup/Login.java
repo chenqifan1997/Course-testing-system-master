@@ -121,7 +121,7 @@ public class Login extends JFrame implements ActionListener {
 					if (num.equals(rs.getString("id")) && password.equals(rs.getString("password"))) {
 						b = true;
 						try {
-							File file = new File("E:/workspace for danei/Course-testing-system-master/data/data.txt");
+							File file = new File("E:/git/Course-testing-system-master/data/data.txt");
 
 							if (!file.exists()) {
 								file.createNewFile();
@@ -179,7 +179,7 @@ public class Login extends JFrame implements ActionListener {
 					if (num.equals(rs.getString("id")) && password.equals(rs.getString("password"))) {
 						b = true;
 						try {
-							File file = new File("E:/workspace for danei/Course-testing-system-master/data/data.txt");
+							File file = new File("E:/git/Course-testing-system-master/data/data.txt");
 
 							if (!file.exists()) {
 								file.createNewFile();

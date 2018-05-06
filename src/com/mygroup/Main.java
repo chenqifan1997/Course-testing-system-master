@@ -46,6 +46,35 @@ public class Main extends JFrame implements ActionListener {
 	int b = 1;
 	int sum = 0;
 	String str, str1, str2, str3 = null;
+	
+	String s = "";
+	String ss = GetS();
+
+	public String GetS() {
+		FileInputStream fis = null;
+		InputStreamReader isr = null;
+		BufferedReader br = null;
+		try {
+			File file = new File("E:/git/Course-testing-system-master/data/control.txt");
+			fis = new FileInputStream(file);
+			isr = new InputStreamReader(fis);
+			br = new BufferedReader(isr);
+			String linetext = null;
+			while ((linetext = br.readLine()) != null) {
+				s += linetext;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				br.close();
+				isr.close();
+				fis.close();
+			} catch (Exception e) {
+			}
+		}
+		return s;
+	}
 
 	public Main() {
 		super();
@@ -105,7 +134,12 @@ public class Main extends JFrame implements ActionListener {
 
 		questionCount.setText("第" + b + "题");
 
-		Exam();
+		if (ss.equals("1")) {
+			Exam();
+		}
+		if (ss.equals("2")) {
+			Exam1();
+		}
 
 		JLabel time = new JLabel();
 		new Thread() {
@@ -203,7 +237,7 @@ public class Main extends JFrame implements ActionListener {
 		InputStreamReader isr = null;
 		BufferedReader br = null;
 		try {
-			File file = new File("E:/workspace for danei/Course-testing-system-master/data/data.txt");
+			File file = new File("E:/git/Course-testing-system-master/data/data.txt");
 			fis = new FileInputStream(file);
 			isr = new InputStreamReader(fis);
 			br = new BufferedReader(isr);
@@ -265,6 +299,35 @@ public class Main extends JFrame implements ActionListener {
 			}
 		}
 	}
+	
+	private void Exam1() {
+		// String op = null;
+		Connection cn = null;
+		Statement st = null;
+		ResultSet rs = null;
+		try {
+			cn = DataBase.getConnection("personal");
+			st = cn.createStatement();
+			rs = st.executeQuery("select * from exam2");
+			while (rs.next()) {
+				if (b == rs.getInt(1)) {
+					questionArea.setText(rs.getString("no") + "." + rs.getString("content") + "\n"
+							+ rs.getString("option1") + "\n" + rs.getString("option2") + "\n" + rs.getString("option3")
+							+ "\n" + rs.getString("option4"));
+
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				rs.close();
+				st.close();
+				cn.close();
+			} catch (Exception e) {
+			}
+		}
+	}
 
 	private void check() {
 		String op = null;
@@ -302,6 +365,44 @@ public class Main extends JFrame implements ActionListener {
 			}
 		}
 	}
+	
+	private void check1() {
+		String op = null;
+		Connection cn = null;
+		Statement st = null;
+		ResultSet rs = null;
+		try {
+			cn = DataBase.getConnection("personal");
+			st = cn.createStatement();
+			rs = st.executeQuery("select * from exam2");
+			while (rs.next()) {
+				if (b - 1 == rs.getInt(1)) {
+					for (int i = 0; i < options.length; ++i) {
+						if (options[i].isSelected()) {
+							op = options[i].getText().toString();
+							if (op.equals(rs.getString("answer"))) {
+								sum += 10;
+							} else {
+								sum += 0;
+							}
+							System.out.println(sum);
+							text3.setText(sum + "分");
+						}
+					}
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				rs.close();
+				st.close();
+				cn.close();
+			} catch (Exception e) {
+			}
+		}
+	}
+
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
@@ -309,8 +410,14 @@ public class Main extends JFrame implements ActionListener {
 		if (arg0.getActionCommand().equals("下一题") && b < 20) {
 			b++;
 			questionCount.setText("第" + b + "题");
-			check();
-			Exam();
+			if(ss.equals("1")){
+				check();
+				Exam();
+				}
+				if(ss.equals("2")){
+					check1();
+					Exam1();
+					}
 			if (b == 20) {
 				JOptionPane.showMessageDialog(null, "你已做完所有试题！", "警告", JOptionPane.ERROR_MESSAGE);
 			}
@@ -321,32 +428,25 @@ public class Main extends JFrame implements ActionListener {
 			// check();
 		}
 		if (arg0.getActionCommand().equals("提交")) {
+			Connection cn = null;
 			try {
-				Class.forName("com.mysql.jdbc.Driver");// 加载数据库驱动
-				String url = "jdbc:mysql://localhost:3306/personal";// 声明数据库test的url
-				String user = "root";// 数据库的用户名
-				String password = "123456";// 数据库的密码
 				// 建立数据库连接，获得连接对象conn(抛出异常即可)
-				Connection conn = DriverManager.getConnection(url, user, password);
+				cn = DataBase.getConnection("personal");
 				// 生成一条mysql语句
 				str = text3.getText();// 分数
 				str1 = text1.getText();// 姓名
 				str2 = text4.getText();// 班级
 				str3 = text5.getText();// 学号
 				String sql = "insert into mark(nummber,name,class,score) values(?,?,?,?)";
-				PreparedStatement ps = conn.prepareStatement(sql);// 创建一个Statement对象
+				PreparedStatement ps = cn.prepareStatement(sql);// 创建一个Statement对象
 				ps.setNString(1, str3);// 为sql语句中第一个问号赋值
 				ps.setNString(2, str1);// 为sql语句中第二个问号赋值
 				ps.setNString(3, str2);// 为sql语句第三个问号赋值
 				ps.setNString(4, str);// 为sql语句的第四个问号赋值
 				ps.executeUpdate();// 执行sql语句
 				System.out.println("成功");
-				conn.close();
-			} catch (ClassNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} //
-			catch (SQLException e) {
+				cn.close();
+			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
