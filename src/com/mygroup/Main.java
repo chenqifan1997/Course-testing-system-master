@@ -175,7 +175,6 @@ public class Main extends JFrame implements ActionListener {
 	private JScrollPane createQuestionPane() {
 		JScrollPane panel = new JScrollPane();
 		panel.setBorder(new TitledBorder("题目"));
-		// questionArea.setText("");
 		questionArea.setLineWrap(true);// 设置允许换行
 		questionArea.setEditable(false);// 设置考题不能修改
 		panel.getViewport().add(questionArea);// 把题目放到不带有滚动条的部分
@@ -272,7 +271,6 @@ public class Main extends JFrame implements ActionListener {
 	}
 
 	private void Exam() {
-		// String op = null;
 		Connection cn = null;
 		Statement st = null;
 		ResultSet rs = null;
@@ -301,7 +299,6 @@ public class Main extends JFrame implements ActionListener {
 	}
 	
 	private void Exam1() {
-		// String op = null;
 		Connection cn = null;
 		Statement st = null;
 		ResultSet rs = null;
@@ -422,32 +419,26 @@ public class Main extends JFrame implements ActionListener {
 				JOptionPane.showMessageDialog(null, "你已做完所有试题！", "警告", JOptionPane.ERROR_MESSAGE);
 			}
 		} else if (arg0.getActionCommand().equals("上一题") && b > 1) {
-			// b--;
-			// questionCount.setText("第"+b+"题");
-			// Exam();
-			// check();
+			
 		}
 		if (arg0.getActionCommand().equals("提交")) {
 			Connection cn = null;
 			try {
-				// 建立数据库连接，获得连接对象conn(抛出异常即可)
 				cn = DataBase.getConnection("personal");
-				// 生成一条mysql语句
 				str = text3.getText();// 分数
 				str1 = text1.getText();// 姓名
 				str2 = text4.getText();// 班级
 				str3 = text5.getText();// 学号
 				String sql = "insert into mark(nummber,name,class,score) values(?,?,?,?)";
-				PreparedStatement ps = cn.prepareStatement(sql);// 创建一个Statement对象
-				ps.setNString(1, str3);// 为sql语句中第一个问号赋值
-				ps.setNString(2, str1);// 为sql语句中第二个问号赋值
-				ps.setNString(3, str2);// 为sql语句第三个问号赋值
-				ps.setNString(4, str);// 为sql语句的第四个问号赋值
-				ps.executeUpdate();// 执行sql语句
+				PreparedStatement ps = cn.prepareStatement(sql);
+				ps.setNString(1, str3);
+				ps.setNString(2, str1);
+				ps.setNString(3, str2);
+				ps.setNString(4, str);
+				ps.executeUpdate();
 				System.out.println("成功");
 				cn.close();
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}

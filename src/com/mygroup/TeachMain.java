@@ -79,7 +79,6 @@ public class TeachMain extends JFrame implements ActionListener {
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		this.setContentPane(createContentPane());
-		// this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 
 	private JPanel createContentPane() {
@@ -115,7 +114,6 @@ public class TeachMain extends JFrame implements ActionListener {
 		questionArea.setLineWrap(true);// 设置允许换行
 		questionArea.setEditable(true);// 设置考题不能修改
 		panel.getViewport().add(questionArea);// 把题目放到不带有滚动条的部分
-		// panel.setBorder(new EmptyBorder(6,6,6,6));//提供间隙
 		return panel;
 	}
 
@@ -146,7 +144,6 @@ public class TeachMain extends JFrame implements ActionListener {
 		Connection cn = null;
 		try {
 			cn = DataBase.getConnection("personal");
-			// 生成一条mysql语句
 			str = questionArea.getText();
 			String[] fen = str.split("[\n]");
 			String[] fen1 = fen[0].split("[.]");
@@ -156,18 +153,17 @@ public class TeachMain extends JFrame implements ActionListener {
 				e.printStackTrace();
 			}
 			String sql = "insert into exam(no,content,option1,option2,option3,option4,answer) values(?,?,?,?,?,?,?)";
-			PreparedStatement ps = cn.prepareStatement(sql);// 创建一个Statement对象
-			ps.setInt(1, (int) a);// 为sql语句中第一个问号赋值
-			ps.setNString(2, fen1[1]);// 为sql语句中第二个问号赋值
-			ps.setNString(3, fen[1]);// 为sql语句第三个问号赋值
-			ps.setNString(4, fen[2]);// 为sql语句的第四个问号赋值
+			PreparedStatement ps = cn.prepareStatement(sql);
+			ps.setInt(1, (int) a);
+			ps.setNString(2, fen1[1]);
+			ps.setNString(3, fen[1]);
+			ps.setNString(4, fen[2]);
 			ps.setNString(5, fen[3]);
 			ps.setNString(6, fen[4]);
 			ps.setNString(7, fen[5]);
-			ps.executeUpdate();// 执行sql语句
+			ps.executeUpdate();
 			cn.close();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 
 	}
@@ -176,7 +172,6 @@ public class TeachMain extends JFrame implements ActionListener {
 		Connection cn = null;
 		try {
 			cn = DataBase.getConnection("personal");
-			// 生成一条mysql语句
 			str = questionArea.getText();
 			String[] fen = str.split("[\n]");
 			String[] fen1 = fen[0].split("[.]");
@@ -186,7 +181,7 @@ public class TeachMain extends JFrame implements ActionListener {
 				e.printStackTrace();
 			}
 			String sql = "insert into exam2(no,content,option1,option2,option3,option4,answer) values(?,?,?,?,?,?,?)";
-			PreparedStatement ps = cn.prepareStatement(sql);// 创建一个Statement对象
+			PreparedStatement ps = cn.prepareStatement(sql);
 			ps.setInt(1, (int) a);// 为sql语句中第一个问号赋值
 			ps.setNString(2, fen1[1]);// 为sql语句中第二个问号赋值
 			ps.setNString(3, fen[1]);// 为sql语句第三个问号赋值
@@ -194,10 +189,9 @@ public class TeachMain extends JFrame implements ActionListener {
 			ps.setNString(5, fen[3]);
 			ps.setNString(6, fen[4]);
 			ps.setNString(7, fen[5]);
-			ps.executeUpdate();// 执行sql语句
+			ps.executeUpdate();
 			cn.close();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 
 	}
@@ -266,12 +260,11 @@ public class TeachMain extends JFrame implements ActionListener {
 		try {
 			cn = DataBase.getConnection("personal");
 			String sql = "delete from exam where no = " + b;
-			st = cn.createStatement();// 创建一个Statement对象
-			st.executeUpdate(sql);// 执行sql语句
+			st = cn.createStatement();
+			st.executeUpdate(sql);
 			st.close();
 			cn.close();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 
 	}
@@ -281,8 +274,8 @@ public class TeachMain extends JFrame implements ActionListener {
 		try {
 			cn = DataBase.getConnection("personal");
 			String sql = "delete from exam2 where no = " + b;
-			st = cn.createStatement();// 创建一个Statement对象
-			st.executeUpdate(sql);// 执行sql语句
+			st = cn.createStatement();
+			st.executeUpdate(sql);
 			st.close();
 			cn.close();
 		} catch (Exception e) {

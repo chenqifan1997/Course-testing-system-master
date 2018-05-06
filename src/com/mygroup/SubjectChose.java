@@ -44,7 +44,6 @@ public class SubjectChose extends JFrame implements ActionListener {
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		this.setContentPane(createContentPane());
-		// this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 
 	private JPanel createContentPane() {

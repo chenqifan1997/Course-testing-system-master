@@ -167,7 +167,6 @@ public class Message extends JFrame implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		// TODO Auto-generated method stub
 		if (arg0.getActionCommand().equals("обр╩╡╫")) {
 			Person();
 		}

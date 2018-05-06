@@ -174,7 +174,6 @@ public class Register extends JFrame implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
 		if (e.getActionCommand().equals("х╥хо")) {
 			insert();
 			this.setVisible(false);

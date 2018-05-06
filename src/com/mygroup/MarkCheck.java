@@ -47,7 +47,7 @@ public class MarkCheck extends JFrame implements ActionListener {
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		this.setContentPane(createContentPane());
-		// this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
 	}
 
 	private JPanel createContentPane() {
@@ -102,13 +102,6 @@ public class MarkCheck extends JFrame implements ActionListener {
 			rs = st.executeQuery("select * from mark");
 
 			while (rs.next()) {
-
-				/*
-				 * chengjiArea.setText("姓名："+rs.getString("name") + "    班级：" +
-				 * rs.getString("class")+"班" + "    学号：" +
-				 * rs.getString("nummber") + "    分数：" + rs.getString("score"));
-				 */
-
 				sb.append(rs.getString(1)); // 读出每一列的数据
 				sb.append("*"); // 在每列数据后面做标记，将来便于做拆分
 				sb.append(rs.getString(2));
@@ -120,12 +113,8 @@ public class MarkCheck extends JFrame implements ActionListener {
 
 			}
 			str = sb.toString(); // 将数据由StringBuffer类型转化成String类型
-			// String datas;
-			// 将总数据以指定字符分割成数组，每条数据为数组的一项
-			String[] params = str.split("%");
-
-			// 将每条数据再拆分，则param数据保存的是一条数据的每一项数据
-			for (int i = 0; i < params.length; i++) {
+			String[] params = str.split("%");// 将总数据以指定字符分割成数组，每条数据为数组的一项
+			for (int i = 0; i < params.length; i++) {// 将每条数据再拆分，则param数据保存的是一条数据的每一项数据
 				String[] param = params[b].split("\\*");
 				if (b == i) {
 					chengjiArea.setText("姓名：" + param[1] + "    班级：" + param[2] + "班" + "    学号：" + param[0] + "    分数："
@@ -150,20 +139,17 @@ public class MarkCheck extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		// TODO Auto-generated method stub
-
 		if (arg0.getActionCommand().equals("返回")) {
 			this.setVisible(false);
 			TeachMain m = new TeachMain();
 			m.setVisible(true);
 			Connection cn = null;
 			Statement st = null;
-
 			try {
 				cn = DataBase.getConnection("personal");
-				// 生成一条mysql语句
 				String sql = "delete from mark ";
-				st = cn.createStatement();// 创建一个Statement对象
-				st.executeUpdate(sql);// 执行sql语句
+				st = cn.createStatement();
+				st.executeUpdate(sql);
 				st.close();
 				cn.close();
 			} catch (Exception e) {
