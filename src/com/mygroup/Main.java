@@ -57,7 +57,7 @@ public class Main extends JFrame implements ActionListener {
 		InputStreamReader isr = null;
 		BufferedReader br = null;
 		try {
-			File file = new File("E:/workspace for danei/Course-testing-system-master/data/control.txt");
+			File file = new File("E:/git/Course-testing-system-master/data/control.txt");
 			fis = new FileInputStream(file);
 			isr = new InputStreamReader(fis);
 			br = new BufferedReader(isr);
@@ -244,7 +244,7 @@ public class Main extends JFrame implements ActionListener {
 		InputStreamReader isr = null;
 		BufferedReader br = null;
 		try {
-			File file = new File("E:/workspace for danei/Course-testing-system-master/data/data.txt");
+			File file = new File("E:/git/Course-testing-system-master/data/data.txt");
 			fis = new FileInputStream(file);
 			isr = new InputStreamReader(fis);
 			br = new BufferedReader(isr);
