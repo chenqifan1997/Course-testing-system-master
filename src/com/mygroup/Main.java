@@ -35,18 +35,20 @@ import javax.swing.border.TitledBorder;
 
 public class Main extends JFrame implements ActionListener {
 
-	JTextField text1 = new JTextField();
+	JLabel text1 = new JLabel();
+	JLabel sub = new JLabel();
 	JLabel text3 = new JLabel();
 	JLabel text4 = new JLabel();
 	JLabel text5 = new JLabel();
 	JLabel questionCount = new JLabel();
 	JTextArea questionArea = new JTextArea();
 	Option[] options = new Option[4];
+	ButtonGroup bg = new ButtonGroup();
 	static int a = 180;
 	int b = 1;
 	int sum = 0;
 	String str, str1, str2, str3 = null;
-	
+
 	String s = "";
 	String ss = GetS();
 
@@ -55,7 +57,7 @@ public class Main extends JFrame implements ActionListener {
 		InputStreamReader isr = null;
 		BufferedReader br = null;
 		try {
-			File file = new File("E:/git/Course-testing-system-master/data/control.txt");
+			File file = new File("E:/workspace for danei/Course-testing-system-master/data/control.txt");
 			fis = new FileInputStream(file);
 			isr = new InputStreamReader(fis);
 			br = new BufferedReader(isr);
@@ -79,7 +81,7 @@ public class Main extends JFrame implements ActionListener {
 	public Main() {
 		super();
 		this.setTitle("易考试在线考试系统");
-		this.setSize(600, 380);
+		this.setSize(615, 380);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		this.setContentPane(createContentPane());
@@ -107,15 +109,13 @@ public class Main extends JFrame implements ActionListener {
 
 	private JPanel createExaminfoPane() {
 		JPanel panel = new JPanel();
-		panel.setLayout(new GridLayout(1, 6));
+		panel.setLayout(new GridLayout(1, 8));
 		JLabel name = new JLabel("姓名：");
 		Name();
-		text1.setEditable(false);
 		panel.add(name);
 		panel.add(text1);
 		JLabel time = new JLabel("时间：");
-		JTextField text2 = new JTextField();
-		text2.setEditable(false);
+		JLabel text2 = new JLabel();
 		Date day = new Date();
 		SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss");
 		text2.setText(df.format(day));
@@ -125,6 +125,15 @@ public class Main extends JFrame implements ActionListener {
 		text3.setText(0 + "分");
 		panel.add(score);
 		panel.add(text3);
+		JLabel subject = new JLabel("考试科目：");
+		if (ss.equals("1")) {
+			sub.setText("组成原理");
+		}
+		if (ss.equals("2")) {
+			sub.setText("低等数学");
+		}
+		panel.add(subject);
+		panel.add(sub);
 		return panel;
 	}
 
@@ -206,7 +215,6 @@ public class Main extends JFrame implements ActionListener {
 
 	private JPanel createOptionPane() {
 		JPanel panel = new JPanel();
-		ButtonGroup bg = new ButtonGroup();
 		Option a = new Option(0, "A");
 		Option b = new Option(1, "B");
 		Option c = new Option(2, "C");
@@ -236,7 +244,7 @@ public class Main extends JFrame implements ActionListener {
 		InputStreamReader isr = null;
 		BufferedReader br = null;
 		try {
-			File file = new File("E:/git/Course-testing-system-master/data/data.txt");
+			File file = new File("E:/workspace for danei/Course-testing-system-master/data/data.txt");
 			fis = new FileInputStream(file);
 			isr = new InputStreamReader(fis);
 			br = new BufferedReader(isr);
@@ -297,7 +305,7 @@ public class Main extends JFrame implements ActionListener {
 			}
 		}
 	}
-	
+
 	private void Exam1() {
 		Connection cn = null;
 		Statement st = null;
@@ -362,7 +370,7 @@ public class Main extends JFrame implements ActionListener {
 			}
 		}
 	}
-	
+
 	private void check1() {
 		String op = null;
 		Connection cn = null;
@@ -400,26 +408,24 @@ public class Main extends JFrame implements ActionListener {
 		}
 	}
 
-
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		// TODO Auto-generated method stub
 		if (arg0.getActionCommand().equals("下一题") && b < 20) {
 			b++;
 			questionCount.setText("第" + b + "题");
-			if(ss.equals("1")){
+			if (ss.equals("1")) {
 				check();
 				Exam();
-				}
-				if(ss.equals("2")){
-					check1();
-					Exam1();
-					}
+			}
+			if (ss.equals("2")) {
+				check1();
+				Exam1();
+			}
 			if (b == 20) {
 				JOptionPane.showMessageDialog(null, "你已做完所有试题！", "警告", JOptionPane.ERROR_MESSAGE);
 			}
-		} else if (arg0.getActionCommand().equals("上一题") && b > 1) {
-			
+			bg.clearSelection();
 		}
 		if (arg0.getActionCommand().equals("提交")) {
 			Connection cn = null;

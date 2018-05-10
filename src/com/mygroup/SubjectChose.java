@@ -100,7 +100,7 @@ public class SubjectChose extends JFrame implements ActionListener {
 		if (arg0.getActionCommand().equals("组成原理")) {
 			c = "1";
 			try {
-				File file = new File("E:/git/Course-testing-system-master/data/control.txt");
+				File file = new File("E:/workspace for danei/Course-testing-system-master/data/control.txt");
 				if (!file.exists()) {
 					file.createNewFile();
 				}
@@ -114,7 +114,7 @@ public class SubjectChose extends JFrame implements ActionListener {
 		if (arg0.getActionCommand().equals("低等算数")) {
 			c = "2";
 			try {
-				File file = new File("E:/git/Course-testing-system-master/data/control.txt");
+				File file = new File("E:/workspace for danei/Course-testing-system-master/data/control.txt");
 				if (!file.exists()) {
 					file.createNewFile();
 				}
