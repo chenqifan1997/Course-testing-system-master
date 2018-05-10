@@ -36,6 +36,8 @@ import javax.swing.border.TitledBorder;
 public class TeachMain extends JFrame implements ActionListener {
 
 	JTextField text1 = new JTextField();
+	JLabel text3 = new JLabel();
+	JLabel text5 = new JLabel();
 	JLabel questionCount = new JLabel();
 	JTextArea questionArea = new JTextArea();
 	JTextArea chengjiArea = new JTextArea();
@@ -87,7 +89,7 @@ public class TeachMain extends JFrame implements ActionListener {
 		JLabel label = new JLabel();
 		label.setIcon(new ImageIcon("image/maintop.png"));
 		panel.add(BorderLayout.NORTH, label);
-		panel.add(BorderLayout.CENTER, createQuestionPane());
+		panel.add(BorderLayout.CENTER, createCenterPane());
 		panel.add(BorderLayout.SOUTH, createToolsPane());
 		return panel;
 	}
@@ -114,6 +116,38 @@ public class TeachMain extends JFrame implements ActionListener {
 		questionArea.setLineWrap(true);// 设置允许换行
 		questionArea.setEditable(true);// 设置考题不能修改
 		panel.getViewport().add(questionArea);// 把题目放到不带有滚动条的部分
+		return panel;
+	}
+	
+	private JPanel createCenterPane() {
+		JPanel panel = new JPanel(new BorderLayout());
+		panel.add(BorderLayout.NORTH, createExaminfoPane());
+		panel.add(BorderLayout.CENTER, createQuestionPane());
+		return panel;
+	}
+	private JPanel createExaminfoPane() {
+		JPanel panel = new JPanel();
+		panel.setLayout(new GridLayout(1, 6));
+		JLabel name = new JLabel("姓名：");
+		Name();
+		text1.setEditable(false);
+		panel.add(name);
+		panel.add(text1);
+		JLabel time = new JLabel("教师编号：");
+		JTextField text2 = new JTextField();
+		text2.setEditable(false);
+		text2.setText(text5.getText());
+		panel.add(time);
+		panel.add(text2);
+		JLabel score = new JLabel("当前科目：");
+		if(ss.equals("1")){
+			 text3.setText("计算机组成原理");
+			}
+			else {
+				 text3.setText("低等数学");
+			}
+		panel.add(score);
+		panel.add(text3);
 		return panel;
 	}
 
@@ -195,6 +229,51 @@ public class TeachMain extends JFrame implements ActionListener {
 			e.printStackTrace();
 		} 
 	}
+	
+	private void Name() {
+		String s = "";
+		Connection cn = null;
+		Statement st = null;
+		ResultSet rs = null;
+		FileInputStream fis = null;
+		InputStreamReader isr = null;
+		BufferedReader br = null;
+		try {
+			File file = new File("E:/git/Course-testing-system-master/data/tdata.txt");
+			fis = new FileInputStream(file);
+			isr = new InputStreamReader(fis);
+			br = new BufferedReader(isr);
+			String linetext = null;
+			while ((linetext = br.readLine()) != null) {
+				s += linetext;
+			}
+
+			cn = DataBase.getConnection("personal");
+			st = cn.createStatement();
+			rs = st.executeQuery("select * from tmessage");
+			while (rs.next()) {
+				if (s.equals(rs.getString("id"))) {
+					text1.setText(rs.getString("name"));
+					//text4.setText(rs.getString("major"));
+					text5.setText(rs.getString("number"));
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				br.close();
+				isr.close();
+				fis.close();
+				rs.close();
+				st.close();
+				cn.close();
+			} catch (Exception e) {
+			}
+		}
+	}
+	
+	
 	private void Exam() {
 		Connection cn = null;
 		Statement st = null;

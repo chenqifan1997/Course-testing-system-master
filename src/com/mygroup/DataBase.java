@@ -9,7 +9,7 @@ public class DataBase {
 			String driver = "org.gjt.mm.mysql.Driver";
 			String url = "jdbc:mysql://127.0.0.1:3306/" + dbName;
 			String user = "root";
-			String pass = "123456789";
+			String pass = "123456";
 			Class.forName(driver);
 			cn = DriverManager.getConnection(url, user, pass);
 		} catch (Exception ex) {

@@ -173,13 +173,13 @@ public class Login extends JFrame implements ActionListener {
 			try {
 				cn = DataBase.getConnection("personal");
 				st = cn.createStatement();
-				rs = st.executeQuery("select * from message");
+				rs = st.executeQuery("select * from tmessage");
 				boolean b = false;
 				while (rs.next()) {
 					if (num.equals(rs.getString("id")) && password.equals(rs.getString("password"))) {
 						b = true;
 						try {
-							File file = new File("E:/git/Course-testing-system-master/data/data.txt");
+							File file = new File("E:/git/Course-testing-system-master/data/tdata.txt");
 
 							if (!file.exists()) {
 								file.createNewFile();
