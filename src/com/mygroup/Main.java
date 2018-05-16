@@ -143,13 +143,8 @@ public class Main extends JFrame implements ActionListener {
 
 		questionCount.setText("第" + b + "题");
 
-		if (ss.equals("1")) {
-			Exam();
-		}
-		if (ss.equals("2")) {
-			Exam1();
-		}
-
+		Exam();
+			
 		JLabel time = new JLabel();
 		new Thread() {
 			@SuppressWarnings("deprecation")
@@ -279,41 +274,16 @@ public class Main extends JFrame implements ActionListener {
 	}
 
 	private void Exam() {
+		String sexam;
+		ChoseExam se = new ChoseExam();
+		sexam =se.getExam();
 		Connection cn = null;
 		Statement st = null;
 		ResultSet rs = null;
 		try {
 			cn = DataBase.getConnection("personal");
 			st = cn.createStatement();
-			rs = st.executeQuery("select * from exam");
-			while (rs.next()) {
-				if (b == rs.getInt(1)) {
-					questionArea.setText(rs.getString("no") + "." + rs.getString("content") + "\n"
-							+ rs.getString("option1") + "\n" + rs.getString("option2") + "\n" + rs.getString("option3")
-							+ "\n" + rs.getString("option4"));
-
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				rs.close();
-				st.close();
-				cn.close();
-			} catch (Exception e) {
-			}
-		}
-	}
-
-	private void Exam1() {
-		Connection cn = null;
-		Statement st = null;
-		ResultSet rs = null;
-		try {
-			cn = DataBase.getConnection("personal");
-			st = cn.createStatement();
-			rs = st.executeQuery("select * from exam2");
+			rs = st.executeQuery(sexam.toString());
 			while (rs.next()) {
 				if (b == rs.getInt(1)) {
 					questionArea.setText(rs.getString("no") + "." + rs.getString("content") + "\n"
@@ -335,6 +305,9 @@ public class Main extends JFrame implements ActionListener {
 	}
 
 	private void check() {
+		String sexam;
+		ChoseExam se = new ChoseExam();
+		sexam =se.getExam();
 		String op = null;
 		Connection cn = null;
 		Statement st = null;
@@ -342,44 +315,7 @@ public class Main extends JFrame implements ActionListener {
 		try {
 			cn = DataBase.getConnection("personal");
 			st = cn.createStatement();
-			rs = st.executeQuery("select * from exam");
-			while (rs.next()) {
-				if (b - 1 == rs.getInt(1)) {
-					for (int i = 0; i < options.length; ++i) {
-						if (options[i].isSelected()) {
-							op = options[i].getText().toString();
-							if (op.equals(rs.getString("answer"))) {
-								sum += 10;
-							} else {
-								sum += 0;
-							}
-							System.out.println(sum);
-							text3.setText(sum + "分");
-						}
-					}
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				rs.close();
-				st.close();
-				cn.close();
-			} catch (Exception e) {
-			}
-		}
-	}
-
-	private void check1() {
-		String op = null;
-		Connection cn = null;
-		Statement st = null;
-		ResultSet rs = null;
-		try {
-			cn = DataBase.getConnection("personal");
-			st = cn.createStatement();
-			rs = st.executeQuery("select * from exam2");
+			rs = st.executeQuery(sexam.toString());
 			while (rs.next()) {
 				if (b - 1 == rs.getInt(1)) {
 					for (int i = 0; i < options.length; ++i) {
@@ -414,14 +350,8 @@ public class Main extends JFrame implements ActionListener {
 		if (arg0.getActionCommand().equals("下一题") && b < 20) {
 			b++;
 			questionCount.setText("第" + b + "题");
-			if (ss.equals("1")) {
-				check();
-				Exam();
-			}
-			if (ss.equals("2")) {
-				check1();
-				Exam1();
-			}
+			check();
+			Exam();
 			if (b == 20) {
 				JOptionPane.showMessageDialog(null, "你已做完所有试题！", "警告", JOptionPane.ERROR_MESSAGE);
 			}

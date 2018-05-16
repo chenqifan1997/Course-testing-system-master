@@ -45,6 +45,7 @@ public class TeachMain extends JFrame implements ActionListener {
 	int b = 1;
 	long a;
 	String str = null;
+	
 
 	String s = "";
     String ss = GetS();
@@ -99,12 +100,7 @@ public class TeachMain extends JFrame implements ActionListener {
 		panel.setBorder(new EmptyBorder(6, 6, 6, 6));// 提供间隙
 
 		questionCount.setText("第" + b + "题");
-		if(ss.equals("1")){
-			  Exam();
-			}
-			else {
-			  Exam1();
-			}
+		Exam();
 		panel.add(BorderLayout.WEST, questionCount);
 		panel.add(BorderLayout.CENTER, createBtnPane());
 		return panel;
@@ -152,6 +148,7 @@ public class TeachMain extends JFrame implements ActionListener {
 	}
 
 	private JPanel createBtnPane() {
+
 		JPanel panel = new JPanel(new FlowLayout());
 		JButton ch = new JButton("选择科目");
 		JButton t = new JButton("添加题目");
@@ -173,62 +170,7 @@ public class TeachMain extends JFrame implements ActionListener {
 		panel.add(c);
 		return panel;
 	}
-
-	private void Addquestion() {
-		Connection cn = null;
-		try {
-			cn = DataBase.getConnection("personal");
-			str = questionArea.getText();
-			String[] fen = str.split("[\n]");
-			String[] fen1 = fen[0].split("[.]");
-			try {
-				a = Integer.parseInt(fen1[0]);
-			} catch (NumberFormatException e) {
-				e.printStackTrace();
-			}
-			String sql = "insert into exam(no,content,option1,option2,option3,option4,answer) values(?,?,?,?,?,?,?)";
-			PreparedStatement ps = cn.prepareStatement(sql);
-			ps.setInt(1, (int) a);
-			ps.setNString(2, fen1[1]);
-			ps.setNString(3, fen[1]);
-			ps.setNString(4, fen[2]);
-			ps.setNString(5, fen[3]);
-			ps.setNString(6, fen[4]);
-			ps.setNString(7, fen[5]);
-			ps.executeUpdate();
-			cn.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		} 
-	}
-
-	private void Addquestion1() {
-		Connection cn = null;
-		try {
-			cn = DataBase.getConnection("personal");
-			str = questionArea.getText();
-			String[] fen = str.split("[\n]");
-			String[] fen1 = fen[0].split("[.]");
-			try {
-				a = Integer.parseInt(fen1[0]);
-			} catch (NumberFormatException e) {
-				e.printStackTrace();
-			}
-			String sql = "insert into exam2(no,content,option1,option2,option3,option4,answer) values(?,?,?,?,?,?,?)";
-			PreparedStatement ps = cn.prepareStatement(sql);
-			ps.setInt(1, (int) a);// 为sql语句中第一个问号赋值
-			ps.setNString(2, fen1[1]);// 为sql语句中第二个问号赋值
-			ps.setNString(3, fen[1]);// 为sql语句第三个问号赋值
-			ps.setNString(4, fen[2]);// 为sql语句的第四个问号赋值
-			ps.setNString(5, fen[3]);
-			ps.setNString(6, fen[4]);
-			ps.setNString(7, fen[5]);
-			ps.executeUpdate();
-			cn.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		} 
-	}
+	
 	
 	private void Name() {
 		String s = "";
@@ -273,16 +215,49 @@ public class TeachMain extends JFrame implements ActionListener {
 		}
 	}
 	
-	
+	private void Addquestion() {
+		String sAdd;
+		ChoseExam se = new ChoseExam();
+		sAdd=se.getAddExam();
+		Connection cn = null;
+		try {
+			cn = DataBase.getConnection("personal");
+			str = questionArea.getText();
+			String[] fen = str.split("[\n]");
+			String[] fen1 = fen[0].split("[.]");
+			try {
+				a = Integer.parseInt(fen1[0]);
+			} catch (NumberFormatException e) {
+				e.printStackTrace();
+			}
+			String sql = sAdd;
+			PreparedStatement ps = cn.prepareStatement(sql);
+			ps.setInt(1, (int) a);
+			ps.setNString(2, fen1[1]);
+			ps.setNString(3, fen[1]);
+			ps.setNString(4, fen[2]);
+			ps.setNString(5, fen[3]);
+			ps.setNString(6, fen[4]);
+			ps.setNString(7, fen[5]);
+			ps.executeUpdate();
+			cn.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} 
+	}
+
 	private void Exam() {
+		String sexam;
+		ChoseExam se = new ChoseExam();
+		sexam =se.getExam();
 		Connection cn = null;
 		Statement st = null;
 		ResultSet rs = null;
 		try {
 			cn = DataBase.getConnection("personal");
 			st = cn.createStatement();
-			rs = st.executeQuery("select * from exam");
-			while (rs.next()) {
+			rs = st.executeQuery(sexam.toString());
+			while (rs.next()) { 
 				if (b == rs.getInt(1)) {
 					questionArea.setText(rs.getString("no") + "." + rs.getString("content") + "\n"
 							+ rs.getString("option1") + "\n" + rs.getString("option2") + "\n" + rs.getString("option3")
@@ -304,41 +279,15 @@ public class TeachMain extends JFrame implements ActionListener {
 		}
 	}
 
-	private void Exam1() {
-		Connection cn = null;
-		Statement st = null;
-		ResultSet rs = null;
-		try {
-			cn = DataBase.getConnection("personal");
-			st = cn.createStatement();
-			rs = st.executeQuery("select * from exam2");
-			while (rs.next()) {
-				if (b == rs.getInt(1)) {
-					questionArea.setText(rs.getString("no") + "." + rs.getString("content") + "\n"
-							+ rs.getString("option1") + "\n" + rs.getString("option2") + "\n" + rs.getString("option3")
-							+ "\n" + rs.getString("option4"));
-				}
-				if (b > rs.getInt(1)) {
-					questionArea.setText("");
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				rs.close();
-				st.close();
-				cn.close();
-			} catch (Exception e) {
-			}
-		}
-	}
 	private void Deletequestion() {
+		String sdele;
+		ChoseExam se = new ChoseExam();
+		sdele=se.getDeleteExam();
 		Connection cn = null;
 		Statement st = null;
 		try {
 			cn = DataBase.getConnection("personal");
-			String sql = "delete from exam where no = " + b;
+			String sql = sdele.toString() + b;
 			st = cn.createStatement();
 			st.executeUpdate(sql);
 			st.close();
@@ -347,44 +296,19 @@ public class TeachMain extends JFrame implements ActionListener {
 			e.printStackTrace();
 		} 
 	}
-	private void Deletequestion1() {
-		Connection cn = null;
-		Statement st = null;
-		try {
-			cn = DataBase.getConnection("personal");
-			String sql = "delete from exam2 where no = " + b;
-			st = cn.createStatement();
-			st.executeUpdate(sql);
-			st.close();
-			cn.close();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} 
-	}
-
+	
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		// TODO Auto-generated method stub
 		if (arg0.getActionCommand().equals("下一题")) {
 			b++;
 			questionCount.setText("第" + b + "题");
-			if(ss.equals("1")){
-			      Exam();
-				}
-				if(ss.equals("2")){
-				 Exam1();
-				}
+			Exam();
 
 		} else if (arg0.getActionCommand().equals("上一题") && b > 1) {
 			b--;
-			questionCount.setText("第" + b + "题");
-			if(ss.equals("1")){
-			      Exam();
-				}
-				if(ss.equals("2")){
-				 Exam1();
-				}
+			questionCount.setText("第" + b + "题");	
+			Exam();
 		}
 
 		if (arg0.getActionCommand().equals("选择科目")) {
@@ -397,23 +321,13 @@ public class TeachMain extends JFrame implements ActionListener {
 			m.setVisible(true);
 		}
 		if (arg0.getActionCommand().equals("添加题目")) {
-			if(ss.equals("1")){
-				 Addquestion();
-				}
-				if(ss.equals("2")){
-					Addquestion1();
-				}		
+			 Addquestion();
+			 Exam();
 		}
 
 		if (arg0.getActionCommand().equals("删除题目")) {
-			if(ss.equals("1")){
-				  Deletequestion();
-				  Exam();
-				}
-				if(ss.equals("2")){
-					  Deletequestion1();
-					  Exam1();
-					}
+		    Deletequestion();
+		    Exam();
 		}
 	}
 
