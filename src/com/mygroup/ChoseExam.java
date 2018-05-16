@@ -14,29 +14,8 @@ public class ChoseExam {
     
     //String Exam1 = "exam2";
 	public String GetS(){
-		FileInputStream fis = null;
-		InputStreamReader isr = null;
-		BufferedReader br = null;
-		try {
-			File file = new File("E:/git/Course-testing-system-master/data/control.txt");
-			fis = new FileInputStream(file);
-			isr = new InputStreamReader(fis);
-			br = new BufferedReader(isr);
-			String linetext = null;
-			while ((linetext = br.readLine()) != null) {
-				s += linetext;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				br.close();
-				isr.close();
-				fis.close();
-			} catch (Exception e) {
-			}
-		}
-        return s;
+		UseFile gs = new UseFile();
+        return gs.ReadFile();
 	}
 	
 	public String getExam() {

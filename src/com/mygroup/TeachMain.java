@@ -46,35 +46,6 @@ public class TeachMain extends JFrame implements ActionListener {
 	long a;
 	String str = null;
 	
-
-	String s = "";
-    String ss = GetS();
-	public String GetS(){
-		FileInputStream fis = null;
-		InputStreamReader isr = null;
-		BufferedReader br = null;
-		try {
-			File file = new File("E:/git/Course-testing-system-master/data/control.txt");
-			fis = new FileInputStream(file);
-			isr = new InputStreamReader(fis);
-			br = new BufferedReader(isr);
-			String linetext = null;
-			while ((linetext = br.readLine()) != null) {
-				s += linetext;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				br.close();
-				isr.close();
-				fis.close();
-			} catch (Exception e) {
-			}
-		}
-        return s;
-	}
-	
 	public TeachMain() {
 		super();
 		this.setTitle("易考试在线考试系统");
@@ -136,7 +107,8 @@ public class TeachMain extends JFrame implements ActionListener {
 		panel.add(time);
 		panel.add(text2);
 		JLabel score = new JLabel("当前科目：");
-		if(ss.equals("1")){
+		ChoseExam te = new ChoseExam();
+		if(te.ss.equals("1")){
 			 text3.setText("计算机组成原理");
 			}
 			else {
@@ -173,28 +145,16 @@ public class TeachMain extends JFrame implements ActionListener {
 	
 	
 	private void Name() {
-		String s = "";
 		Connection cn = null;
 		Statement st = null;
 		ResultSet rs = null;
-		FileInputStream fis = null;
-		InputStreamReader isr = null;
-		BufferedReader br = null;
 		try {
-			File file = new File("E:/git/Course-testing-system-master/data/tdata.txt");
-			fis = new FileInputStream(file);
-			isr = new InputStreamReader(fis);
-			br = new BufferedReader(isr);
-			String linetext = null;
-			while ((linetext = br.readLine()) != null) {
-				s += linetext;
-			}
-
+            UseFile th = new UseFile();
 			cn = DataBase.getConnection("personal");
 			st = cn.createStatement();
 			rs = st.executeQuery("select * from tmessage");
 			while (rs.next()) {
-				if (s.equals(rs.getString("id"))) {
+				if (th.ReadteachFile().equals(rs.getString("id"))) {
 					text1.setText(rs.getString("name"));
 					//text4.setText(rs.getString("major"));
 					text5.setText(rs.getString("number"));
@@ -204,9 +164,6 @@ public class TeachMain extends JFrame implements ActionListener {
 			e.printStackTrace();
 		} finally {
 			try {
-				br.close();
-				isr.close();
-				fis.close();
 				rs.close();
 				st.close();
 				cn.close();
@@ -330,7 +287,6 @@ public class TeachMain extends JFrame implements ActionListener {
 		    Exam();
 		}
 	}
-
 	public static void main(String[] args) {
 
 	}

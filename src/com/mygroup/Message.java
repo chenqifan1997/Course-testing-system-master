@@ -106,28 +106,18 @@ public class Message extends JFrame implements ActionListener {
 	}
 
 	private void Person() {
-		String s = "";
 		Connection cn = null;
 		Statement st = null;
 		ResultSet rs = null;
-		FileInputStream fis = null;
-		InputStreamReader isr = null;
-		BufferedReader br = null;
-		try {
-			File file = new File("E:/git/Course-testing-system-master/data/data.txt");
-			fis = new FileInputStream(file);
-			isr = new InputStreamReader(fis);
-			br = new BufferedReader(isr);
-			String linetext = null;
-			while ((linetext = br.readLine()) != null) {
-				s += linetext;
-			}
-
+		try{
+			
+			UseFile msg = new UseFile();
+			
 			cn = DataBase.getConnection("personal");
 			st = cn.createStatement();
 			rs = st.executeQuery("select * from message");
 			while (rs.next()) {
-				if (s.equals(rs.getString("id"))) {
+				if (msg.stdMessageRead().equals(rs.getString("id"))) {
 					text0.setText(rs.getString("name"));
 					text1.setText(rs.getString("number"));
 					text2.setText(rs.getString("sex"));
@@ -140,15 +130,15 @@ public class Message extends JFrame implements ActionListener {
 			e.printStackTrace();
 		} finally {
 			try {
-				br.close();
-				isr.close();
-				fis.close();
 				rs.close();
 				st.close();
 				cn.close();
 			} catch (Exception e) {
+				
 			}
+			
 		}
+		
 	}
 
 	private void Check() {

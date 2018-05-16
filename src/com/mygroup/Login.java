@@ -120,25 +120,13 @@ public class Login extends JFrame implements ActionListener {
 				while (rs.next()) {
 					if (num.equals(rs.getString("id")) && password.equals(rs.getString("password"))) {
 						b = true;
-						try {
-							File file = new File("E:/git/Course-testing-system-master/data/data.txt");
-
-							if (!file.exists()) {
-								file.createNewFile();
-							}
-
-							FileWriter fw = new FileWriter(file);
-							fw.write(num);
-							fw.close();
-
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
+					
+						UseFile std = new UseFile();
+						std.writestdFile(num);
 
 						break;
 					}
 				}
-
 				if (b) {
 					this.setVisible(false);
 					Message m = new Message();
@@ -157,7 +145,6 @@ public class Login extends JFrame implements ActionListener {
 				}
 			}
 		}
-
 		if (arg0.getActionCommand().equals("ÖØÖÃ")) {
 			this.setVisible(false);
 			Reset r = new Reset();
@@ -178,25 +165,13 @@ public class Login extends JFrame implements ActionListener {
 				while (rs.next()) {
 					if (num.equals(rs.getString("id")) && password.equals(rs.getString("password"))) {
 						b = true;
-						try {
-							File file = new File("E:/git/Course-testing-system-master/data/tdata.txt");
-
-							if (!file.exists()) {
-								file.createNewFile();
-							}
-
-							FileWriter fw = new FileWriter(file);
-							fw.write(num);
-							fw.close();
-
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
+					
+						UseFile std = new UseFile();
+						std.writestdFile(num);
 
 						break;
 					}
 				}
-
 				if (b) {
 					this.setVisible(false);
 					TeachMain m = new TeachMain();

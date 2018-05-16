@@ -49,35 +49,6 @@ public class Main extends JFrame implements ActionListener {
 	int sum = 0;
 	String str, str1, str2, str3 = null;
 
-	String s = "";
-	String ss = GetS();
-
-	public String GetS() {
-		FileInputStream fis = null;
-		InputStreamReader isr = null;
-		BufferedReader br = null;
-		try {
-			File file = new File("E:/git/Course-testing-system-master/data/control.txt");
-			fis = new FileInputStream(file);
-			isr = new InputStreamReader(fis);
-			br = new BufferedReader(isr);
-			String linetext = null;
-			while ((linetext = br.readLine()) != null) {
-				s += linetext;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				br.close();
-				isr.close();
-				fis.close();
-			} catch (Exception e) {
-			}
-		}
-		return s;
-	}
-
 	public Main() {
 		super();
 		this.setTitle("易考试在线考试系统");
@@ -126,10 +97,11 @@ public class Main extends JFrame implements ActionListener {
 		panel.add(score);
 		panel.add(text3);
 		JLabel subject = new JLabel("考试科目：");
-		if (ss.equals("1")) {
+		ChoseExam e = new ChoseExam();
+		if (e.ss.equals("1")) {
 			sub.setText("组成原理");
 		}
-		if (ss.equals("2")) {
+		if (e.ss.equals("2")) {
 			sub.setText("低等数学");
 		}
 		panel.add(subject);
@@ -231,28 +203,17 @@ public class Main extends JFrame implements ActionListener {
 	}
 
 	private void Name() {
-		String s = "";
 		Connection cn = null;
 		Statement st = null;
 		ResultSet rs = null;
-		FileInputStream fis = null;
-		InputStreamReader isr = null;
-		BufferedReader br = null;
+	
 		try {
-			File file = new File("E:/git/Course-testing-system-master/data/data.txt");
-			fis = new FileInputStream(file);
-			isr = new InputStreamReader(fis);
-			br = new BufferedReader(isr);
-			String linetext = null;
-			while ((linetext = br.readLine()) != null) {
-				s += linetext;
-			}
-
+			UseFile std = new UseFile();
 			cn = DataBase.getConnection("personal");
 			st = cn.createStatement();
 			rs = st.executeQuery("select * from message");
 			while (rs.next()) {
-				if (s.equals(rs.getString("id"))) {
+				if (std.stdMessageRead().equals(rs.getString("id"))) {
 					text1.setText(rs.getString("name"));
 					text4.setText(rs.getString("class"));
 					text5.setText(rs.getString("number"));
@@ -262,9 +223,6 @@ public class Main extends JFrame implements ActionListener {
 			e.printStackTrace();
 		} finally {
 			try {
-				br.close();
-				isr.close();
-				fis.close();
 				rs.close();
 				st.close();
 				cn.close();
