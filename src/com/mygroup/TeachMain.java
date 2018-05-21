@@ -5,6 +5,8 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -22,6 +24,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -33,7 +36,7 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
-public class TeachMain extends JFrame implements ActionListener {
+public class TeachMain extends JFrame implements ActionListener,ItemListener {
 
 	JTextField text1 = new JTextField();
 	JLabel text3 = new JLabel();
@@ -42,8 +45,13 @@ public class TeachMain extends JFrame implements ActionListener {
 	JTextArea questionArea = new JTextArea();
 	JTextArea chengjiArea = new JTextArea();
 	JTextArea choseArea = new JTextArea();
+	
+	String[] strType={"计算机组成原理","低等算数"};
+	JComboBox selectBox = new JComboBox(strType);
+	
 	int b = 1;
 	long a;
+	String c;
 	String str = null;
 	
 	public TeachMain() {
@@ -106,14 +114,8 @@ public class TeachMain extends JFrame implements ActionListener {
 		text2.setText(text5.getText());
 		panel.add(time);
 		panel.add(text2);
-		JLabel score = new JLabel("当前科目：");
-		ChoseExam te = new ChoseExam();
-		if(te.ss.equals("1")){
-			 text3.setText("计算机组成原理");
-			}
-			else {
-				 text3.setText("低等数学");
-			}
+		JLabel score = new JLabel("当前在线人数：");
+		
 		panel.add(score);
 		panel.add(text3);
 		return panel;
@@ -122,7 +124,7 @@ public class TeachMain extends JFrame implements ActionListener {
 	private JPanel createBtnPane() {
 
 		JPanel panel = new JPanel(new FlowLayout());
-		JButton ch = new JButton("选择科目");
+		//JButton ch = new JButton("选择科目");
 		JButton t = new JButton("添加题目");
 		JButton s = new JButton("删除题目");
 		JButton c = new JButton("查询成绩");
@@ -131,14 +133,18 @@ public class TeachMain extends JFrame implements ActionListener {
 		pre.addActionListener(this);
 		next.addActionListener(this);
 		c.addActionListener(this);
-		ch.addActionListener(this);
+		//ch.addActionListener(this);
 		t.addActionListener(this);
 		s.addActionListener(this);
+		
+		selectBox.setVisible(true);
+		selectBox.addItemListener(this);
+		panel.add(selectBox);
 		panel.add(pre);
 		panel.add(next);
 		panel.add(t);
 		panel.add(s);
-		panel.add(ch);
+		//panel.add(ch);
 		panel.add(c);
 		return panel;
 	}
@@ -268,11 +274,7 @@ public class TeachMain extends JFrame implements ActionListener {
 			Exam();
 		}
 
-		if (arg0.getActionCommand().equals("选择科目")) {
-			this.setVisible(false);
-			SubjectChose n = new SubjectChose();
-			n.setVisible(true);
-		} else if (arg0.getActionCommand().equals("查询成绩")) {
+	    if (arg0.getActionCommand().equals("查询成绩")) {
 			this.setVisible(false);
 			MarkCheck m = new MarkCheck();
 			m.setVisible(true);
@@ -289,5 +291,27 @@ public class TeachMain extends JFrame implements ActionListener {
 	}
 	public static void main(String[] args) {
 
+	}
+
+	@Override
+	public void itemStateChanged(ItemEvent arg0) {
+		// TODO Auto-generated method stub
+		
+		if(arg0.getStateChange() == ItemEvent.SELECTED){
+			if(arg0.getSource() == selectBox){
+				int index = selectBox.getSelectedIndex();
+				if(index == 0){
+					c = "1";
+					UseFile d = new UseFile();
+					d.writeFile(c);
+					Exam();
+				}else{
+					c = "2";
+					UseFile d = new UseFile();
+					d.writeFile(c);
+					Exam();
+				}
+			}
+		}
 	}
 }
