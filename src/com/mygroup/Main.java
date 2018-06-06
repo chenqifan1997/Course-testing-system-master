@@ -104,6 +104,10 @@ public class Main extends JFrame implements ActionListener {
 		if (e.ss.equals("2")) {
 			sub.setText("µÍµÈÊýÑ§");
 		}
+		if(e.ss.equals("3")){
+			UseFile ke = new UseFile();
+			sub.setText(ke.ReadkemuFile());
+		}
 		panel.add(subject);
 		panel.add(sub);
 		return panel;

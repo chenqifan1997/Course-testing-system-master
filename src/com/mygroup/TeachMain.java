@@ -39,15 +39,21 @@ import javax.swing.border.TitledBorder;
 public class TeachMain extends JFrame implements ActionListener,ItemListener {
 
 	JTextField text1 = new JTextField();
-	JLabel text3 = new JLabel();
+	JTextField text3 = new JTextField();
 	JLabel text5 = new JLabel();
 	JLabel questionCount = new JLabel();
 	JTextArea questionArea = new JTextArea();
 	JTextArea chengjiArea = new JTextArea();
 	JTextArea choseArea = new JTextArea();
 	
-	String[] strType={"计算机组成原理","低等算数"};
-	JComboBox selectBox = new JComboBox(strType);
+	String kemu1="计算机组成原理",kemu2="低等算数";
+	
+	String kemu3="可增加的科目";
+		
+	Vector strType = new Vector();
+    
+	JComboBox selectBox;
+	
 	
 	int b = 1;
 	long a;
@@ -57,7 +63,7 @@ public class TeachMain extends JFrame implements ActionListener,ItemListener {
 	public TeachMain() {
 		super();
 		this.setTitle("易考试在线考试系统");
-		this.setSize(600, 380);
+		this.setSize(750, 450);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		this.setContentPane(createContentPane());
@@ -114,8 +120,8 @@ public class TeachMain extends JFrame implements ActionListener,ItemListener {
 		text2.setText(text5.getText());
 		panel.add(time);
 		panel.add(text2);
-		JLabel score = new JLabel("当前在线人数：");
-		
+		JLabel score = new JLabel("可增加的科目为：");
+		//text3.getText().toString();
 		panel.add(score);
 		panel.add(text3);
 		return panel;
@@ -130,22 +136,30 @@ public class TeachMain extends JFrame implements ActionListener,ItemListener {
 		JButton c = new JButton("查询成绩");
 		JButton pre = new JButton("上一题");
 		JButton next = new JButton("下一题");
+		JButton q = new JButton("确认修改");
 		pre.addActionListener(this);
 		next.addActionListener(this);
 		c.addActionListener(this);
 		//ch.addActionListener(this);
 		t.addActionListener(this);
 		s.addActionListener(this);
+		q.addActionListener(this);
 		
+	    strType.addElement(kemu1);
+	    strType.addElement(kemu2);
+	    strType.addElement(kemu3);
+	    selectBox = new JComboBox(strType);
+	    selectBox.setSelectedIndex(0);
 		selectBox.setVisible(true);
 		selectBox.addItemListener(this);
+		
 		panel.add(selectBox);
 		panel.add(pre);
 		panel.add(next);
 		panel.add(t);
 		panel.add(s);
-		//panel.add(ch);
 		panel.add(c);
+		panel.add(q);
 		return panel;
 	}
 	
@@ -288,6 +302,31 @@ public class TeachMain extends JFrame implements ActionListener,ItemListener {
 		    Deletequestion();
 		    Exam();
 		}
+		if(arg0.getActionCommand().equals("确认修改")){
+		  
+				kemu3 = text3.getText().toString();
+				System.out.println(kemu3);
+				UseFile kemu = new UseFile();
+				kemu.writekemuFile(text3.getText());
+				
+				if(selectBox.getSelectedIndex()==-1||selectBox.getSelectedIndex()==0||selectBox.getSelectedIndex()==1){
+					JOptionPane.showMessageDialog(null, "不能更改！", "警告", JOptionPane.ERROR_MESSAGE);
+				}else{
+					strType.removeElement(selectBox.getSelectedItem().toString());
+					strType.addElement(kemu3);
+					selectBox.setSelectedIndex(2);
+				
+				}
+
+				revalidate();
+				repaint();
+				selectBox.setVisible(true);
+				selectBox.addItemListener(this);
+				
+				
+				
+			
+		}
 	}
 	public static void main(String[] args) {
 
@@ -305,11 +344,17 @@ public class TeachMain extends JFrame implements ActionListener,ItemListener {
 					UseFile d = new UseFile();
 					d.writeFile(c);
 					Exam();
-				}else{
+				}else if(index == 1){
 					c = "2";
 					UseFile d = new UseFile();
 					d.writeFile(c);
 					Exam();
+				}else if(index == 2){
+					c = "3";
+					UseFile d = new UseFile();
+					d.writeFile(c);
+					Exam();
+				    System.out.println("成功");
 				}
 			}
 		}
